@@ -5,16 +5,19 @@ import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 
 import com.will.picviewer.base.BaseActivity;
 import com.will.picviewer.decoder.HtmlDecoder;
 import com.will.picviewer.decoder.bean.PicObject;
-import com.will.picviewer.decoder.bean.TitleObject;
+import com.will.picviewer.decoder.bean.ArticleObject;
 import com.will.picviewer.file.FileHelper;
 import com.will.picviewer.listPic.ListPicAdapter;
 import com.will.picviewer.network.NetworkHelper;
 import com.will.picviewer.network.NetworkServer;
+import com.will.picviewer.sp.SPHelper;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -22,18 +25,20 @@ import java.util.List;
 
 public class ListPicActivity extends BaseActivity {
 
-    private TitleObject titleObject;
+    private ArticleObject articleObject;
     private List<PicObject> items;
     private RecyclerView picListView;
     private Toolbar toolbar;
     private ListPicAdapter adapter;
+
+    private boolean isFavoriteChecked;
     private volatile int downloadCount = 1;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_image_list);
-        titleObject = (TitleObject)(getIntent().getSerializableExtra("title"));
+        articleObject = (ArticleObject)(getIntent().getSerializableExtra("title"));
         initializeView();
         getImageList();
     }
@@ -43,7 +48,7 @@ public class ListPicActivity extends BaseActivity {
         picListView.setAdapter(adapter);
         picListView.setLayoutManager(new LinearLayoutManager(this));
         toolbar = findViewById(R.id.activity_image_list_toolbar);
-        toolbar.setTitle(titleObject.getTitle());
+        toolbar.setTitle(articleObject.getTitle());
         toolbar.setSubtitle("0/0");
         toolbar.setNavigationIcon(R.drawable.back_arraw_holo_dark_no_trim);
         setSupportActionBar(toolbar);
@@ -55,7 +60,7 @@ public class ListPicActivity extends BaseActivity {
         });
     }
     private void getImageList(){
-        NetworkHelper.getInstance().getHtml(NetworkServer.getDefaultServer()+titleObject.getLink(), new NetworkHelper.NetworkHelperHtmlCallback() {
+        NetworkHelper.getInstance().getHtml(NetworkServer.getDefaultServer()+ articleObject.getLink(), new NetworkHelper.NetworkHelperHtmlCallback() {
             @Override
             public void onSuccess(String html) {
                 items =  HtmlDecoder.getInstance().decodePicFormHtml(html);
@@ -78,7 +83,7 @@ public class ListPicActivity extends BaseActivity {
                 @Override
                 public void onSuccess(String fileName, final byte[] bytes) {
                     File externalCacheDir = getExternalCacheDir();
-                    final String filePath = externalCacheDir.getPath() + File.separator + titleObject.getTitle() + File.separator + fileName;
+                    final String filePath = externalCacheDir.getPath() + File.separator + articleObject.getTitle() + File.separator + fileName;
                     FileHelper.saveBytesToDisk(filePath,bytes);
                     runOnUiThread(new Runnable() {
                         @Override
@@ -96,5 +101,25 @@ public class ListPicActivity extends BaseActivity {
                 }
             });
         }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.list_pic_toolbar_menu,menu);
+        setFavoriteMenuIconChecked( SPHelper.getInstance(this).isArticleFavorited(articleObject));
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if(item.getItemId() == R.id.menu_list_pic_favorite){
+            setFavoriteMenuIconChecked(!isFavoriteChecked);
+            SPHelper.getInstance(this).setArticleAsFavorited(articleObject,!isFavoriteChecked);
+        }
+        return true;
+    }
+
+    private void setFavoriteMenuIconChecked(boolean which){
+        toolbar.getMenu().findItem(R.id.menu_list_pic_favorite).setIcon(which?R.drawable.favorite_holo_dark_no_trim:R.drawable.favorite_border_holo_dark_no_trim);
     }
 }

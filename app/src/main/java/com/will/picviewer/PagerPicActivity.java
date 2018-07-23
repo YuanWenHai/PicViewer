@@ -14,7 +14,7 @@ import android.widget.Toast;
 import com.will.picviewer.base.BaseActivity;
 import com.will.picviewer.decoder.HtmlDecoder;
 import com.will.picviewer.decoder.bean.PicObject;
-import com.will.picviewer.decoder.bean.TitleObject;
+import com.will.picviewer.decoder.bean.ArticleObject;
 import com.will.picviewer.file.FileHelper;
 import com.will.picviewer.file.FilePath;
 import com.will.picviewer.network.NetworkHelper;
@@ -29,7 +29,7 @@ import java.util.List;
 public class PagerPicActivity extends BaseActivity {
 
     private ViewPager mViewPager;
-    private TitleObject titleObject;
+    private ArticleObject articleObject;
     private android.support.v7.widget.Toolbar mToolbar;
     private PicPagerAdapter mPicPagerAdapter;
     private List<PicObject> items;
@@ -38,7 +38,7 @@ public class PagerPicActivity extends BaseActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pic);
-        titleObject = (TitleObject)(getIntent().getSerializableExtra("title"));
+        articleObject = (ArticleObject)(getIntent().getSerializableExtra("title"));
         initializeView();
         loadItems();
     }
@@ -48,7 +48,7 @@ public class PagerPicActivity extends BaseActivity {
     private void initializeView(){
         mViewPager = findViewById(R.id.activity_pic_view_pager);
         mToolbar = findViewById(R.id.activity_pic_toolbar);
-        mToolbar.setTitle(titleObject.getTitle());
+        mToolbar.setTitle(articleObject.getTitle());
         mToolbar.setSubtitle("0/0");
         mToolbar.setTitleTextColor(Color.WHITE);
         mToolbar.setSubtitleTextColor(Color.WHITE);
@@ -79,7 +79,7 @@ public class PagerPicActivity extends BaseActivity {
     }
     private void loadItems(){
 
-        NetworkHelper.getInstance().getHtml(NetworkServer.getDefaultServer()+titleObject.getLink(), new NetworkHelper.NetworkHelperHtmlCallback() {
+        NetworkHelper.getInstance().getHtml(NetworkServer.getDefaultServer()+ articleObject.getLink(), new NetworkHelper.NetworkHelperHtmlCallback() {
             @Override
             public void onSuccess(String html) {
                 items =  HtmlDecoder.getInstance().decodePicFormHtml(html);
@@ -97,7 +97,7 @@ public class PagerPicActivity extends BaseActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.pic_toolbar_menu, menu);
+        getMenuInflater().inflate(R.menu.pager_pic_toolbar_menu, menu);
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -105,7 +105,7 @@ public class PagerPicActivity extends BaseActivity {
     @Override
     public boolean onOptionsItemSelected(final MenuItem item) {
         switch (item.getItemId()){
-            case R.id.menu_pic_toolbar_save:
+            case R.id.menu_pager_pic_save:
                 if(checkWriteStoragePermission()){
                     int currentIndex = mViewPager.getCurrentItem();
                     String picName = items.get(currentIndex).getLink().substring(items.get(currentIndex).getLink().lastIndexOf("/")+1,items.get(currentIndex).getLink().length());
@@ -113,7 +113,7 @@ public class PagerPicActivity extends BaseActivity {
                     ((PicFragment)currentFragment).savePic(picName);
                 }
                 break;
-            case R.id.menu_pic_toolbar_download_all:
+            case R.id.menu_pager_pic_download_all:
                 if(checkWriteStoragePermission()){
                     List<String> urls = new ArrayList<>();
                     for(PicObject object : items){
@@ -143,7 +143,7 @@ public class PagerPicActivity extends BaseActivity {
                     });
                 }
                 break;
-            case R.id.menu_pic_toolbar_open_browser:
+            case R.id.menu_pager_pic_open_browser:
                 break;
         }
         return true;

@@ -12,7 +12,7 @@ import com.github.nukc.LoadMoreWrapper.LoadMoreAdapter;
 import com.github.nukc.LoadMoreWrapper.LoadMoreWrapper;
 import com.will.picviewer.base.BaseActivity;
 import com.will.picviewer.decoder.HtmlDecoder;
-import com.will.picviewer.decoder.bean.TitleObject;
+import com.will.picviewer.decoder.bean.ArticleObject;
 import com.will.picviewer.main.TitleAdapter;
 import com.will.picviewer.network.NetworkHelper;
 import com.will.picviewer.network.NetworkServer;
@@ -37,7 +37,7 @@ public class MainActivity extends BaseActivity implements SwipeRefreshLayout.OnR
         mAdapter = new TitleAdapter();
         mAdapter.setOnItemClickCallback(new TitleAdapter.TitleItemClickCallback() {
             @Override
-            public void onClick(TitleObject object) {
+            public void onClick(ArticleObject object) {
                 Intent intent = new Intent(MainActivity.this,ListPicActivity.class);
                 intent.putExtra("title",object);
                 startActivity(intent);
@@ -63,7 +63,7 @@ public class MainActivity extends BaseActivity implements SwipeRefreshLayout.OnR
         NetworkHelper.getInstance().getHtml(NetworkServer.getDaguarreTitleListUrl(pageIndex), new NetworkHelper.NetworkHelperHtmlCallback() {
             @Override
             public void onSuccess(String html) {
-                List<TitleObject> items = HtmlDecoder.getInstance().decodeTitleFromHtml(html);
+                List<ArticleObject> items = HtmlDecoder.getInstance().decodeTitleFromHtml(html);
                 mAdapter.addItems(items);
                 mAdapter.notifyDataSetChanged();
                 pageIndex++;

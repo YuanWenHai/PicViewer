@@ -3,7 +3,7 @@ package com.will.picviewer.decoder;
 import android.util.Log;
 
 import com.will.picviewer.decoder.bean.PicObject;
-import com.will.picviewer.decoder.bean.TitleObject;
+import com.will.picviewer.decoder.bean.ArticleObject;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -31,18 +31,18 @@ public class HtmlDecoder {
 
     }
 
-    public List<TitleObject> decodeTitleFromHtml(String listHtml){
+    public List<ArticleObject> decodeTitleFromHtml(String listHtml){
         Document document = Jsoup.parse(listHtml);
         Elements items = document.select("table#ajaxtable").select("tr.tr3.t_one.tac");
-        ArrayList<TitleObject> list = new ArrayList<>();
-        TitleObject title;
+        ArrayList<ArticleObject> list = new ArrayList<>();
+        ArticleObject title;
         for (int i=0; i<items.size();i++){
             Element item = items.get(i);
             if(!item.toString().contains("P]")){
                 continue;
             }
 
-            title = new TitleObject();
+            title = new ArticleObject();
 
             Elements titleElement = item.select("h3").select("a");
             if(titleElement.size() > 0){

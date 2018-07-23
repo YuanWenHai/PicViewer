@@ -9,14 +9,14 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.will.picviewer.R;
-import com.will.picviewer.decoder.bean.TitleObject;
+import com.will.picviewer.decoder.bean.ArticleObject;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class TitleAdapter extends RecyclerView.Adapter<TitleAdapter.TitleViewHolder>{
 
-    private List<TitleObject> data = new ArrayList<>();
+    private List<ArticleObject> data = new ArrayList<>();
     private TitleItemClickCallback callback;
     @NonNull
     @Override
@@ -26,7 +26,7 @@ public class TitleAdapter extends RecyclerView.Adapter<TitleAdapter.TitleViewHol
 
     @Override
     public void onBindViewHolder(@NonNull TitleViewHolder holder, int position) {
-        TitleObject object =  data.get(position);
+        ArticleObject object =  data.get(position);
         holder.author.setText(object.getAuthor());
         holder.title.setText(object.getTitle());
         if(object.getTime().isEmpty()){
@@ -43,7 +43,7 @@ public class TitleAdapter extends RecyclerView.Adapter<TitleAdapter.TitleViewHol
         return data.size();
     }
 
-    public void addItems(List<TitleObject> items){
+    public void addItems(List<ArticleObject> items){
         data.addAll(items);
     }
     public void clearItems(){
@@ -72,6 +72,6 @@ public class TitleAdapter extends RecyclerView.Adapter<TitleAdapter.TitleViewHol
         }
     }
     public interface TitleItemClickCallback{
-        void onClick(TitleObject object);
+        void onClick(ArticleObject object);
     }
 }
