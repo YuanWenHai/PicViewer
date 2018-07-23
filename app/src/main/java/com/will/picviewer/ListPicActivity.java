@@ -2,6 +2,8 @@ package com.will.picviewer;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 
@@ -10,20 +12,21 @@ import com.will.picviewer.decoder.HtmlDecoder;
 import com.will.picviewer.decoder.bean.PicObject;
 import com.will.picviewer.decoder.bean.TitleObject;
 import com.will.picviewer.file.FileHelper;
+import com.will.picviewer.listPic.ListPicAdapter;
 import com.will.picviewer.network.NetworkHelper;
 import com.will.picviewer.network.NetworkServer;
-import com.will.picviewer.view.ImageListView;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ImageListActivity extends BaseActivity {
+public class ListPicActivity extends BaseActivity {
 
     private TitleObject titleObject;
     private List<PicObject> items;
-    private ImageListView imageListView;
+    private RecyclerView picListView;
     private Toolbar toolbar;
+    private ListPicAdapter adapter;
     private volatile int downloadCount = 1;
 
     @Override
@@ -35,7 +38,10 @@ public class ImageListActivity extends BaseActivity {
         getImageList();
     }
     private void initializeView(){
-        imageListView = findViewById(R.id.activity_image_list_view);
+        picListView = findViewById(R.id.activity_image_list_recycler_view);
+        adapter = new ListPicAdapter();
+        picListView.setAdapter(adapter);
+        picListView.setLayoutManager(new LinearLayoutManager(this));
         toolbar = findViewById(R.id.activity_image_list_toolbar);
         toolbar.setTitle(titleObject.getTitle());
         toolbar.setSubtitle("0/0");
@@ -78,8 +84,7 @@ public class ImageListActivity extends BaseActivity {
                         @Override
                         public void run() {
                             toolbar.setSubtitle(downloadCount+"/"+items.size());
-                            //imageListView.addImage(BitmapFactory.decodeByteArray(bytes,0,bytes.length));
-                            imageListView.addImage(filePath);
+                            adapter.addItem(new File(filePath));
                             downloadCount++;
                         }
                     });

@@ -19,14 +19,14 @@ import com.will.picviewer.file.FileHelper;
 import com.will.picviewer.file.FilePath;
 import com.will.picviewer.network.NetworkHelper;
 import com.will.picviewer.network.NetworkServer;
-import com.will.picviewer.pager.PicFragment;
-import com.will.picviewer.pager.PicPagerAdapter;
+import com.will.picviewer.pagerPic.PicFragment;
+import com.will.picviewer.pagerPic.PicPagerAdapter;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PicActivity extends BaseActivity {
+public class PagerPicActivity extends BaseActivity {
 
     private ViewPager mViewPager;
     private TitleObject titleObject;
@@ -126,7 +126,7 @@ public class PicActivity extends BaseActivity {
                                 mViewPager.post(new Runnable() {
                                     @Override
                                     public void run(){
-                                        Toast.makeText(PicActivity.this, "download completely", Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(PagerPicActivity.this, "download completely", Toast.LENGTH_SHORT).show();
                                     }
                                 });
                             }

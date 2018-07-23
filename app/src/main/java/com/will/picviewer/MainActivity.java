@@ -13,7 +13,7 @@ import com.github.nukc.LoadMoreWrapper.LoadMoreWrapper;
 import com.will.picviewer.base.BaseActivity;
 import com.will.picviewer.decoder.HtmlDecoder;
 import com.will.picviewer.decoder.bean.TitleObject;
-import com.will.picviewer.list.TitleAdapter;
+import com.will.picviewer.main.TitleAdapter;
 import com.will.picviewer.network.NetworkHelper;
 import com.will.picviewer.network.NetworkServer;
 
@@ -38,7 +38,7 @@ public class MainActivity extends BaseActivity implements SwipeRefreshLayout.OnR
         mAdapter.setOnItemClickCallback(new TitleAdapter.TitleItemClickCallback() {
             @Override
             public void onClick(TitleObject object) {
-                Intent intent = new Intent(MainActivity.this,ImageListActivity.class);
+                Intent intent = new Intent(MainActivity.this,ListPicActivity.class);
                 intent.putExtra("title",object);
                 startActivity(intent);
             }

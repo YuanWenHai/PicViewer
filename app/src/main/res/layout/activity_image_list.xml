@@ -11,8 +11,8 @@
         android:background="@color/colorPrimary"
         app:contentInsetStartWithNavigation="0dp"
         app:contentInsetStart="0dp"/>
-    <com.will.picviewer.view.ImageListView
-        android:id="@+id/activity_image_list_view"
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/activity_image_list_recycler_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
 

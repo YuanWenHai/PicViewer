@@ -1,4 +1,4 @@
-package com.will.picviewer.pager;
+package com.will.picviewer.pagerPic;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;

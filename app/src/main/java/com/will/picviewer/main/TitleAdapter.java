@@ -1,4 +1,4 @@
-package com.will.picviewer.list;
+package com.will.picviewer.main;
 
 import android.graphics.Color;
 import android.support.annotation.NonNull;
