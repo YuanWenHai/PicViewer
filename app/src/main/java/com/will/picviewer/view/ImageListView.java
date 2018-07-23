@@ -10,10 +10,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 
-import com.squareup.picasso.Picasso;
-
-import java.io.File;
-
 public class ImageListView extends ScrollView {
 
     private LinearLayout linearLayout;
@@ -61,7 +57,6 @@ public class ImageListView extends ScrollView {
         BitmapFactory.decodeFile(path,options);
         ImageView imageView = makeImageView(options.outWidth,options.outHeight);
         linearLayout.addView(imageView);
-        Picasso.get().load(new File(path)).into(imageView);
 
     }
 
