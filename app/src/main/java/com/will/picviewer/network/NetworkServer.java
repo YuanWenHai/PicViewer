@@ -1,5 +1,9 @@
 package com.will.picviewer.network;
 
+import android.content.Context;
+
+import com.will.picviewer.sp.SPHelper;
+
 public class NetworkServer {
 
     private static String SERVER_MAINLAND = "https://cl.b9x.win/";
@@ -7,7 +11,7 @@ public class NetworkServer {
     public static String getDefaultServer(){
         return SERVER_MAINLAND;
     }
-    public static String getDaguarreTitleListUrl(int pageIndex){
-        return SERVER_MAINLAND + PIC_LIST_URL + pageIndex;
+    public static String getDaguarreTitleListUrl(Context context,int pageIndex){
+        return SPHelper.getInstance(context).getCurrentServer() + PIC_LIST_URL + pageIndex;
     }
 }

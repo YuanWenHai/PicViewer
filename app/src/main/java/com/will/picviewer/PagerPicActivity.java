@@ -13,14 +13,14 @@ import android.widget.Toast;
 
 import com.will.picviewer.base.BaseActivity;
 import com.will.picviewer.decoder.HtmlDecoder;
-import com.will.picviewer.decoder.bean.PicObject;
 import com.will.picviewer.decoder.bean.ArticleObject;
+import com.will.picviewer.decoder.bean.PicObject;
 import com.will.picviewer.file.FileHelper;
 import com.will.picviewer.file.FilePath;
 import com.will.picviewer.network.NetworkHelper;
-import com.will.picviewer.network.NetworkServer;
 import com.will.picviewer.pagerPic.PicFragment;
 import com.will.picviewer.pagerPic.PicPagerAdapter;
+import com.will.picviewer.sp.SPHelper;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -79,7 +79,7 @@ public class PagerPicActivity extends BaseActivity {
     }
     private void loadItems(){
 
-        NetworkHelper.getInstance().getHtml(NetworkServer.getDefaultServer()+ articleObject.getLink(), new NetworkHelper.NetworkHelperHtmlCallback() {
+        NetworkHelper.getInstance().getHtml(SPHelper.getInstance(this).getCurrentServer()+ articleObject.getLink(), new NetworkHelper.NetworkHelperHtmlCallback() {
             @Override
             public void onSuccess(String html) {
                 items =  HtmlDecoder.getInstance().decodePicFormHtml(html);

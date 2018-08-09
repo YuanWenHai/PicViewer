@@ -4,4 +4,5 @@
     <string name="downloadAll">download all</string>
     <string name="openWeb">open web in browser</string>
     <string name="favorite">favorite</string>
+    <string name="setServer">set server</string>
 </resources>

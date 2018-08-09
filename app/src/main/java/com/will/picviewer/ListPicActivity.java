@@ -1,5 +1,7 @@
 package com.will.picviewer;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
@@ -11,12 +13,11 @@ import android.view.View;
 
 import com.will.picviewer.base.BaseActivity;
 import com.will.picviewer.decoder.HtmlDecoder;
-import com.will.picviewer.decoder.bean.PicObject;
 import com.will.picviewer.decoder.bean.ArticleObject;
+import com.will.picviewer.decoder.bean.PicObject;
 import com.will.picviewer.file.FileHelper;
 import com.will.picviewer.listPic.ListPicAdapter;
 import com.will.picviewer.network.NetworkHelper;
-import com.will.picviewer.network.NetworkServer;
 import com.will.picviewer.sp.SPHelper;
 
 import java.io.File;
@@ -60,7 +61,7 @@ public class ListPicActivity extends BaseActivity {
         });
     }
     private void getImageList(){
-        NetworkHelper.getInstance().getHtml(NetworkServer.getDefaultServer()+ articleObject.getLink(), new NetworkHelper.NetworkHelperHtmlCallback() {
+        NetworkHelper.getInstance().getHtml(SPHelper.getInstance(this).getCurrentServer()+ articleObject.getLink(), new NetworkHelper.NetworkHelperHtmlCallback() {
             @Override
             public void onSuccess(String html) {
                 items =  HtmlDecoder.getInstance().decodePicFormHtml(html);
@@ -115,6 +116,9 @@ public class ListPicActivity extends BaseActivity {
         if(item.getItemId() == R.id.menu_list_pic_favorite){
             setFavoriteMenuIconChecked(!isFavoriteChecked);
             SPHelper.getInstance(this).setArticleAsFavorited(articleObject,!isFavoriteChecked);
+        }else if(item.getItemId() == R.id.menu_list_pic_open_browser){
+            Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(SPHelper.getInstance(this).getCurrentServer()+ articleObject.getLink()));
+            startActivity(browserIntent);
         }
         return true;
     }
